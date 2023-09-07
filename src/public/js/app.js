@@ -8,7 +8,7 @@ function handleOpen() {
 }
 
 function handleMessage(message) {
-    console.log("New message :", message.data, " from the server");
+    console.log("New message :", message.data, "from the server");
 }
 
 function handleClose() {
@@ -21,6 +21,13 @@ frontSocket.addEventListener("message", handleMessage);
 
 frontSocket.addEventListener("close", handleClose);
 
-setTimeout(() => {
-    frontSocket.send("Hi! I'm browser.")
-}, 10000);
+
+function handleSubmit(event) {
+    event.preventDefault();
+    const input = messageForm.querySelector("input");
+    frontSocket.send(input.value);
+    input.value = "";
+}
+
+messageForm.addEventListener("submit", handleSubmit);
+
