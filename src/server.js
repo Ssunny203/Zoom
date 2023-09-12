@@ -3,7 +3,6 @@ import http from "http";
 // import WebSocketServer from "ws";
 import {Server} from "socket.io";
 
-
 const app = express(); //서버 셋팅
 const httpServer = http.createServer(app);
 const IOServer = new Server(httpServer);
@@ -20,12 +19,12 @@ const handleListen = () => console.log("Listening on http://localhost:3000");
 // const server = http.createServer(app);
 // const wss = new WebSocketServer.Server({ server }); //http 서버 위에 webSocket 서버를 만듦
 
-function onSocketClose() {
-    console.log("Disconnected from the Browser ⛔");
-}
+
 // Websocket으로 채팅 구축
 // const sockets = [];
-
+// function onSocketClose() {
+//     console.log("Disconnected from the Browser ⛔");
+// }
 // wss.on("connection", (backSocket) => { //socket = 연결된 브라우저
 //     sockets.push(backSocket);
 //     backSocket["nickname"] = "anon";
@@ -53,5 +52,9 @@ function onSocketClose() {
 //     backSocket.on("close", onSocketClose);
 // });
 
+IOServer.on("connection", (socket) => {
+    console.log(socket);
+    socket.on("room", msg => console.log(msg));
+});
 
-IOServer.listen(3000, handleListen);
+httpServer.listen(3000, handleListen);
