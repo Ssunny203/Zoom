@@ -5,7 +5,7 @@ import {Server} from "socket.io";
 
 const app = express(); //서버 셋팅
 const httpServer = http.createServer(app);
-const IOServer = new Server(httpServer);
+const io = new Server(httpServer);
 
 app.set("view engine", "pug");
 app.set("views", __dirname + "/views"); // __dirname을 호출하면 같은 디렉토리 경로가 반환됨
@@ -52,9 +52,16 @@ const handleListen = () => console.log("Listening on http://localhost:3000");
 //     backSocket.on("close", onSocketClose);
 // });
 
-IOServer.on("connection", (socket) => {
-    console.log(socket);
-    socket.on("room", msg => console.log(msg));
+io.on("connection", (socket) => {
+    // console.log(socket);
+    socket.onAny((event) => {
+        console.log(`Socket Event : ${event}`);
+    });
+    socket.on("enter_room", (roomName, done) => {
+        socket.join(roomName);
+        done();
+        socket.to(roomName).emit("welcome");
+    });
 });
 
 httpServer.listen(3000, handleListen);
