@@ -54,13 +54,22 @@ const handleListen = () => console.log("Listening on http://localhost:3000");
 
 io.on("connection", (socket) => {
     // console.log(socket);
+    socket["nickname"] = "Anon";
     socket.onAny((event) => {
         console.log(`Socket Event : ${event}`);
     });
     socket.on("enter_room", (roomName, done) => {
         socket.join(roomName);
         done();
-        socket.to(roomName).emit("welcome");
+        socket.to(roomName).emit("welcomeRoom", socket.nickname);
+    });
+    socket.on("disconnecting", () => {
+        socket.rooms.forEach(room => socket.to(room).emit("bye", socket.nickname));
+    });
+    socket.on("nickname", (nickname) => (socket["nickname"] = nickname));
+    socket.on("new_message", (msg, room, done) => {
+        socket.to(room).emit("new_message", `${socket.nickname} : ${msg}`);
+        done();
     });
 });
 
