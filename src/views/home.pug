@@ -11,16 +11,19 @@ html(lang="en")
         main
             div#welcomeRoom 
                 form
-                    input(placeholder = "room name", required, type="text")
+                    input(id = "getName", placeholder = "set nickname", required, type="text")
+                    //- button Send
+                form
+                    input(id = "getRoom", placeholder = "room name", required, type="text")
                     button Enter Room
             div#room
                 h3
                 ul
-                form#name
-                    input(placeholder="nickname", required, type="text")
-                    button Send 
+                //- form#set_name
+                //-     input(value =   type="text")
+                //-     button Send 
                 form#msg
-                    input(placeholder="message", required, type="text")
+                    input(id = "getMsg", placeholder="message", required, type="text")
                     button Send 
         script(src="/socket.io/socket.io.js")
         script(src="/public/js/app.js")
