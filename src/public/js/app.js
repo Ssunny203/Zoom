@@ -70,6 +70,3 @@ socket.on("bye", (user) => {
 })
 
 socket.on("new_message", addMessage);
-
-
-
